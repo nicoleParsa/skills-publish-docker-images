@@ -21,7 +21,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Docker image
+        env:
+          IMAGE_NAME: ghcr.io/${{ github.repository }}/stackoverflown:main
         run: |
-          docker build . --tag ghcr.io/${{ github.repository }}/stackoverflown:main
-          docker push ghcr.io/${{ github.repository }}/stackoverflown:main
+          IMAGE_NAME=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
+          docker build . --tag "$IMAGE_NAME"
+          docker push "$IMAGE_NAME"
 
